@@ -1,4 +1,4 @@
-// SimuladorLamport.tsx
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 "use client";
 
 import { useEffect, useRef, useState } from "react";
