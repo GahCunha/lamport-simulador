@@ -12,7 +12,7 @@ interface Processo {
   eventos: string[];
 }
 
-const velocidades = {
+const velocidades: Record<number, number> = {
   1: 2,
   2: 5,
   3: 10,
@@ -58,11 +58,14 @@ export default function SimuladorLamport() {
       const destino = prev.find((p) => p.id === para)!;
       const incrementoOrigem = velocidades[de] || 1;
       const novoRelogioOrigem = origem.relogio + incrementoOrigem;
-      const novoRelogioDestino = Math.max(destino.relogio, novoRelogioOrigem) + (velocidades[para] || 1);
+      const novoRelogioDestino =
+        Math.max(destino.relogio, novoRelogioOrigem) + (velocidades[para] || 1);
 
       setCardsAtualizados((prev) => [...prev, origem.id, destino.id]);
       setTimeout(() => {
-        setCardsAtualizados((prev) => prev.filter((id) => id !== origem.id && id !== destino.id));
+        setCardsAtualizados((prev) =>
+          prev.filter((id) => id !== origem.id && id !== destino.id)
+        );
       }, 500);
 
       return prev.map((proc) => {
@@ -70,14 +73,20 @@ export default function SimuladorLamport() {
           return {
             ...proc,
             relogio: novoRelogioOrigem,
-            eventos: [...proc.eventos, `📤 Enviou para ${destino.nome} (${novoRelogioOrigem})`],
+            eventos: [
+              ...proc.eventos,
+              `📤 Enviou para ${destino.nome} (${novoRelogioOrigem})`,
+            ],
           };
         }
         if (proc.id === para) {
           return {
             ...proc,
             relogio: novoRelogioDestino,
-            eventos: [...proc.eventos, `📥 Recebeu de ${origem.nome} (${novoRelogioDestino})`],
+            eventos: [
+              ...proc.eventos,
+              `📥 Recebeu de ${origem.nome} (${novoRelogioDestino})`,
+            ],
           };
         }
         return proc;
@@ -102,7 +111,9 @@ export default function SimuladorLamport() {
 
   return (
     <div className="relative flex flex-col items-center gap-6 p-6">
-      <h1 className="text-3xl font-bold text-center">Simulador do Algoritmo de Lamport</h1>
+      <h1 className="text-3xl font-bold text-center">
+        Simulador do Algoritmo de Lamport
+      </h1>
       <div className="flex gap-8 justify-center flex-wrap">
         {processos.map((proc, index) => (
           <ProcessoCard
